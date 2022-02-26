@@ -1,0 +1,27 @@
+
+
+3. **Conhecimentos de bioinformática**: questões dissertativas sobre montagem de genoma:
+    
+    1. Descreva todas as etapas que você usaria para realizar a **montagem**, **anotação** e **verificação de qualidade** de um genoma de um **isolado bacteriano**, tendo como base arquivos FASTQ de um sequenciamento **Illumina MiSeq paired-end** (arquivo R1 e R2), com 2 milhões de reads cada. Reads do arquivo R1 tem 306 pares de base, e reads do arquivo R2 tem 206 pares de base. Suponha que a amostra está **bem isolada**, contendo um único organismo.
+    Inicialmente, os dados devem ser verificados quando a sua qualidade. Existem diversas ferramentas para o fazer. Após verificação da qualidade, as regiões de baixo score devem ser trimadas. Após a trimagem, parte-se para a montagem dos dados. Como não foi especificado se há o conhecimento da bactéria sendo sequenciada, recomenda-se uma      montagem de novo (obs.: há diferenças na execução dos programas de montagem para      dados paired end). A verificação da qualidade da montagem pode ser realizada pela     avaliação de scaffolds e anotação dos dados, além de alinhamentos por meio de ferramentas como Blast. A anotação do genoma pode ser realizado por uma série de ferramentas, bem como pipelines otimizados para procariotos como disponibilizado no NCBI.
+Ferramentas que podem ser utilizadas nos passos descritos:    
+Verificação da validade dos dados FASTQ: (FastQValidator; ValidateFastQ)
+Verificação da qualidade dos dados FASTQ: (Fastqc; MultiQC)
+Trimagem dos reads e remoção dos adaptadores: (Trimmomatic)
+Mapeamento dos reads em genoma referência (no caso de montagem com genoma referência): (BWA, Bowtie)
+Montagem dos reads: (SPAdes, Velvet)
+Validação da montagem: (QUAST)
+Predição de regiões codantes: (ORF Finder)
+Anotação dos dados: (Maker2)
+
+    2. Descreva como você faria a identificação taxonômica do genoma montado, considerando que a amostra realmente era um isolado bacteriano.
+    Uma vez montado, o genoma pode ser comparado com bancos de sequências por meio do Blast. Regiões específicas como partes do gene 16S têm sido consideradas o estado da arte na identificação taxonômica de espécies bacterianas e podem ser utilizadas. 
+    3. Os processo descritos em 3.1 e 3.2 são passíveis de automação? Seria possível montar um script que realize todo o processo, tendo como input apenas os arquivos FASTQ (R1 e R2) do sequenciamento? Discorra sobre a possibilidade disso, e, caso possível, como garantir (ou ao menos medir) a qualidade desta montagem/anotação/identificação. Comente sobre possíveis problemas.
+    O processo é passível de automação. Um pipeline automatizado poderia realizar os passos em sequência sem dificuldades. Entretanto, circunstâncias adversas como baixa qualidade de transcritos e problemas de contaminação, por exemplo, podem dificultar a validação dos mesmos. Para evitar esse tipo de contratempo, os pipelines podem conter tratamentos de excessões mais complexos, que gerem relatórios caso os processos fujam do esperado. 
+    
+    4. Descreva como você faria a identificação taxonômica do genoma montado, considerando que a amostra não foi bem isolada, e pode conter mais de um organismo (considere que como houve uma tentativa de isolar, ela deve conter entre 1 e 5 organismos).
+    Nesse caso, pode-se considerar o uso de mapeadores como Bowtie2 contra genomas refência. Além disso, scripts como o QIIME e programas como Kraken podem ser usados contra o banco de dados não redundante do NCBI, identificando os organismos na amostra.
+
+    5. Você identificou a amostra e reconheceu que ela não estava bem isolada. Como você poderia solucionar este genoma? Descreva o que faria para separar os scaffolds em dois arquivos de genoma finais. Como poderia medir a qualidade da montagem final?
+    Sabendo que a amostra inicial não estava bem isolada pode-se utilizar ferramentas de mapeamento para isolar os scaffolds da bactéria de interesse. Utilizando o genoma de referência, scaffolds com baixos scores de alinhamento podem ser retirados.
+
